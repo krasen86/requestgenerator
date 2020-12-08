@@ -1,11 +1,11 @@
 const {MQTT} = require("./mqttConnector")
-const fs = require("fs");
-const variables = require("../config/variables")
 
 class Publisher {
+
     constructor() {
     }
-    publishToBroker() {
+    publishToBroker(request) {
+        MQTT.publish("request", JSON.stringify(request),{qos:2, retain: false});
     }
 }
 
