@@ -5,7 +5,7 @@ class BookingGenerator {
         return {
             "userid": this.generateUserId(),
             "requestid": this.generateRequestId(),
-            "dentistid": 0,
+            "dentistid": 1,
             "issuance": this.generateIssuance(),
             "time": date + " " + time.split(" ", 1) //split the timeslot string and only keep start time.
         }
