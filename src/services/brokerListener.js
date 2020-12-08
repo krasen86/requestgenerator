@@ -1,5 +1,5 @@
 const {MQTT} = require( './mqttConnector');
-const {StressTestRunner} = require( "./stressTestRunner");
+const {LoadTestRunner} = require( "./loadTestRunner");
 
 class BrokerListener {
     constructor() {
@@ -7,7 +7,7 @@ class BrokerListener {
     listenForMessage() {
         MQTT.on('message', function (topic, message) {
             if (topic === "availability/1") {
-                let stressTestRunner = new StressTestRunner();
+                let stressTestRunner = new LoadTestRunner();
                 console.log("Called")
                 stressTestRunner.startStressTest(message);
             }
