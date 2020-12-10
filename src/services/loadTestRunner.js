@@ -1,12 +1,11 @@
 const {BookingGenerator} = require( "./bookingGenerator");
 const {Publisher} = require( "./publisher");
 const {Subscriber} = require("./subscriber");
-const {RequestResponseComparator} = require("./requestResponseComparator")
+let storage = require('./requestResponseStorage');
 
 class LoadTestRunner {
     constructor() {
     }
-
 
     async startStressTest(message) {
         let availability = JSON.parse(message);
@@ -22,12 +21,12 @@ class LoadTestRunner {
         subscriber.topicUnSubscriber("availability/1");
         let booking = new BookingGenerator();
         let publisher = new Publisher();
-        let comparator = new RequestResponseComparator();
         for (let i = 0; i < 100; i++) {
             setTimeout(function(){
-                console.log(i);
+                //console.log(i);
                 let request = booking.createRequest(bookingDateAndTime[i].date, bookingDateAndTime[i].timeSlot);
-                comparator.requests.push(request);
+                let requests = storage.requests;
+                requests.push(request);
                 publisher.publishToBroker(request);
             }, i*100);
         }

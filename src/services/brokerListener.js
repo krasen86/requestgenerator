@@ -1,6 +1,6 @@
 const {MQTT} = require( './mqttConnector');
 const {LoadTestRunner} = require( "./loadTestRunner");
-const {RequestResponseComparator} = require("./requestResponseComparator")
+let storage = require('./requestResponseStorage');
 
 class BrokerListener {
     constructor() {
@@ -15,14 +15,13 @@ class BrokerListener {
             else if (topic.includes("response")){
                 const buffer = message.toString('utf-8');
                 let response = JSON.parse(buffer);
-                let comparator = new RequestResponseComparator();
-                comparator.responses.push(response);
-                console.log(comparator.responses)
-                console.log(comparator.requests)
+                let responses = storage.responses;
+                responses.push(response);
+                //console.log(responses)
+
             }
         })
     }
-
 }
 
 module.exports.BrokerListener = BrokerListener;
