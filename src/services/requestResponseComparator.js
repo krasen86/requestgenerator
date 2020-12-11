@@ -1,5 +1,4 @@
 let storage = require('./requestResponseStorage');
-const {MQTT} = require( './mqttConnector');
 class RequestResponseComparator{
     responsesReceived;
     constructor() {
@@ -28,7 +27,7 @@ class RequestResponseComparator{
         let compared = responseIds.filter(id => requestsIds.includes(id));
         console.log("--------Test------------");
         console.log("Clinic id: " + storage.requests[0].dentistid);
-        console.log("Number of sent Requests: " + storage.requests.length);
+        console.log("Number of sent Requests within 10s: " + storage.requests.length);
         console.log("Number of received Responses: " + storage.responses.length);
         console.log("Matching request response pairs: " + compared.length);
         if (compared.length > 0) {
@@ -46,7 +45,8 @@ class RequestResponseComparator{
             console.log("Number of declined responses: " + responseFailed.length );
         }
         console.log("--------------------------");
-        MQTT.end();
+        storage.requests = [];
+        storage.responses = [];
     }
 
 

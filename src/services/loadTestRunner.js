@@ -7,7 +7,6 @@ const {RequestResponseComparator} = require("./requestResponseComparator");
 class LoadTestRunner {
     constructor() {
     }
-
     async startLoadTest(message) {
         let availability = JSON.parse(message);
         let bookingDateAndTime = [];
@@ -25,18 +24,16 @@ class LoadTestRunner {
         let publisher = new Publisher();
         for (let i = 0; i < numberOfRequestsToSend; i++) {
             setTimeout(function(){
-                //console.log(i);
                 let request = booking.createRequest(bookingDateAndTime[i].date, bookingDateAndTime[i].timeSlot);
                 let requests = storage.requests;
                 publisher.publishToBroker(request);
                 request.sendAt = Date.now();
                 requests.push(request);
-                if (i === numberOfRequestsToSend) {
+                if (i === numberOfRequestsToSend-1) {
                     let comparator = new RequestResponseComparator();
                     comparator.compare();
                 }
-            }, i*100);
-
+            }, i*100, numberOfRequestsToSend);
         }
     }
 
