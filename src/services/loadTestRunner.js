@@ -7,10 +7,11 @@ const {RequestResponseComparator} = require("./requestResponseComparator");
 class LoadTestRunner {
     constructor() {
     }
-    async startLoadTest(message) {
-        let availability = JSON.parse(message);
+    async startLoadTest(number, message) {
+        console.log(message)
+        let availability = message;
         let bookingDateAndTime = [];
-        let numberOfRequestsToSend = 100;
+        let numberOfRequestsToSend = number;
         for (let i = 0; i < availability.length; i++) {
             let date = Object.keys(availability[i])[0];
             for (let j = 0; j < availability[i][date].length; j++) {
