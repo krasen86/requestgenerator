@@ -11,12 +11,14 @@ MQTT.on('connect', function () {
       let brokerListener = new BrokerListener();
       brokerListener.listenForMessage();
 
-      setTimeout(function(){
+      let timeout = setTimeout(function(){
             if (storage.requests.length > 0) {
                   let comparator = new RequestResponseComparator();
                   comparator.compare();
+                  timeout();
             }
             else {
+                  clearTimeout(timeout);
                   MQTT.end();
             }
              }, 30000);
