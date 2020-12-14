@@ -19,6 +19,7 @@
         <h2 class="text-center">Requests</h2>
         <table align="center">
           <tr>
+            <th>Number</th>
             <th>UserId</th>
             <th>DentistID</th>
             <th>Issuance/Send at</th>
@@ -29,6 +30,7 @@
             <th>Response Time in milliseconds</th>
           </tr>
           <tr v-for="(request, index) in requests" :key="index">
+            <td>{{index+1}}</td>
             <td>{{ request.userid }}</td>
             <td>{{ request.dentistid }}</td>
             <td>{{ new Date(request.issuance).toISOString() }}</td>

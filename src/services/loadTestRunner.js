@@ -26,7 +26,7 @@ export default class LoadTestRunner {
                 let request = booking.createRequest(bookingDateAndTime[i].date, bookingDateAndTime[i].timeSlot);
                 publisher.publishToBroker(request);
                 store.dispatch("requests/addRequests" , request);
-            }, i*100, numberOfRequestsToSend);
+            }, i*10, numberOfRequestsToSend);
         }
     }
 
