@@ -1,14 +1,12 @@
 const {BookingGenerator} = require( "./bookingGenerator");
 const {Publisher} = require( "./publisher");
 const {Subscriber} = require("./subscriber");
-let storage = require('./requestResponseStorage');
-const {RequestResponseComparator} = require("./requestResponseComparator");
+import store from "../store";
 
-class LoadTestRunner {
+export default class LoadTestRunner {
     constructor() {
     }
     async startLoadTest(number, message) {
-        console.log(message)
         let availability = message;
         let bookingDateAndTime = [];
         let numberOfRequestsToSend = number;
@@ -26,20 +24,11 @@ class LoadTestRunner {
         for (let i = 0; i < numberOfRequestsToSend; i++) {
             setTimeout(function(){
                 let request = booking.createRequest(bookingDateAndTime[i].date, bookingDateAndTime[i].timeSlot);
-                let requests = storage.requests;
                 publisher.publishToBroker(request);
-                request.sendAt = Date.now();
-                requests.push(request);
-                if (i === numberOfRequestsToSend-1) {
-                    let comparator = new RequestResponseComparator();
-                    comparator.compare();
-                }
+                store.dispatch("requests/addRequests" , request);
             }, i*100, numberOfRequestsToSend);
         }
     }
 
 }
-
-module.exports.LoadTestRunner = LoadTestRunner;
-
 

@@ -1,7 +1,5 @@
 import store from "../store";
 const {MQTT} = require( './mqttConnector');
-let storage = require('./requestResponseStorage');
-
 
 
 export default class BrokerListener {
@@ -16,9 +14,8 @@ export default class BrokerListener {
             else if (topic.includes("response")){
                 const buffer = message.toString('utf-8');
                 let response = JSON.parse(buffer);
-                let responses = storage.responses;
                 response.receivedAt = Date.now();
-                responses.push(response);
+                store.dispatch("requests/addResponse",response);
             }
         })
     }
