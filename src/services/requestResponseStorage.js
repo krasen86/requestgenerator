@@ -1,2 +1,0 @@
-exports.responses = [];
-exports.requests = [];

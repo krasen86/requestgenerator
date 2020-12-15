@@ -1,15 +1,15 @@
 const {BookingGenerator} = require( "./bookingGenerator");
 const {Publisher} = require( "./publisher");
 const {Subscriber} = require("./subscriber");
-let storage = require('./requestResponseStorage');
+import store from "../store";
 
-class LoadTestRunner {
+export default class LoadTestRunner {
     constructor() {
     }
-
-    async startStressTest(message) {
-        let availability = JSON.parse(message);
+    async startLoadTest(number, message) {
+        let availability = message;
         let bookingDateAndTime = [];
+        let numberOfRequestsToSend = number;
         for (let i = 0; i < availability.length; i++) {
             let date = Object.keys(availability[i])[0];
             for (let j = 0; j < availability[i][date].length; j++) {
@@ -21,20 +21,14 @@ class LoadTestRunner {
         subscriber.topicUnSubscriber("availability/1");
         let booking = new BookingGenerator();
         let publisher = new Publisher();
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < numberOfRequestsToSend; i++) {
             setTimeout(function(){
-                //console.log(i);
                 let request = booking.createRequest(bookingDateAndTime[i].date, bookingDateAndTime[i].timeSlot);
-                let requests = storage.requests;
-                requests.push(request);
                 publisher.publishToBroker(request);
-            }, i*100);
+                store.dispatch("requests/addRequests" , request);
+            }, i*10, numberOfRequestsToSend);
         }
     }
 
-
 }
-
-module.exports.LoadTestRunner = LoadTestRunner;
-
 

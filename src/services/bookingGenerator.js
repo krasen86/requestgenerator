@@ -11,7 +11,7 @@ class BookingGenerator {
         }
     }
     generateUserId(){
-        return (Math.round((Date.now() * Math.random()) /10000000))// 5-6 digits
+        return"uuid-"+((new Date).getTime().toString(16)+Math.floor(1E7*Math.random()).toString(16));
     }
     generateRequestId(){
         return (Math.round((Date.now() * Math.random()) /10000000000))// 2-3 digits
