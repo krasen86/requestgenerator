@@ -1,5 +1,5 @@
 module.exports = {
-    URL: 'mqtt://127.0.0.1'
+    URL:  'ws://127.0.0.1:1884'
 };
 
 

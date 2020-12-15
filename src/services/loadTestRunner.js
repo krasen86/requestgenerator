@@ -1,15 +1,15 @@
 const {BookingGenerator} = require( "./bookingGenerator");
 const {Publisher} = require( "./publisher");
 const {Subscriber} = require("./subscriber");
+import store from "../store";
 
-class LoadTestRunner {
+export default class LoadTestRunner {
     constructor() {
     }
-
-
-    async startStressTest(message) {
-        let availability = JSON.parse(message);
+    async startLoadTest(number, message) {
+        let availability = message;
         let bookingDateAndTime = [];
+        let numberOfRequestsToSend = number;
         for (let i = 0; i < availability.length; i++) {
             let date = Object.keys(availability[i])[0];
             for (let j = 0; j < availability[i][date].length; j++) {
@@ -17,19 +17,18 @@ class LoadTestRunner {
                 bookingDateAndTime.push({"date": date, "timeSlot": timeSlot});
             }
         }
-        let subsriber = new Subscriber();
-        subsriber.topicUnSubscriber("availability/1");
+        let subscriber = new Subscriber();
+        subscriber.topicUnSubscriber("availability/1");
         let booking = new BookingGenerator();
         let publisher = new Publisher();
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < numberOfRequestsToSend; i++) {
             setTimeout(function(){
-                console.log(i);
-                publisher.publishToBroker(booking.createRequest(bookingDateAndTime[i].date, bookingDateAndTime[i].timeSlot));
-            }, i*100);
+                let request = booking.createRequest(bookingDateAndTime[i].date, bookingDateAndTime[i].timeSlot);
+                publisher.publishToBroker(request);
+                store.dispatch("requests/addRequests" , request);
+            }, i*10, numberOfRequestsToSend);
         }
     }
+
 }
-
-module.exports.LoadTestRunner = LoadTestRunner;
-
 

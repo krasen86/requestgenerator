@@ -1,22 +1,22 @@
+import store from "../store";
 const {MQTT} = require( './mqttConnector');
-const {LoadTestRunner} = require( "./loadTestRunner");
 
-class BrokerListener {
+
+export default class BrokerListener {
     constructor() {
     }
     listenForMessage() {
         MQTT.on('message', function (topic, message) {
             if (topic === "availability/1") {
-                let stressTestRunner = new LoadTestRunner();
-                console.log("Called")
-                stressTestRunner.startStressTest(message);
+                const buffer = message.toString('utf-8');
+                store.dispatch('requests/addAvailability', JSON.parse(buffer));
             }
-            else {
-                //console.log(JSON.parse(message))
+            else if (topic.includes("response")){
+                const buffer = message.toString('utf-8');
+                let response = JSON.parse(buffer);
+                response.receivedAt = Date.now();
+                store.dispatch("requests/addResponse",response);
             }
         })
     }
-
 }
-
-module.exports.BrokerListener = BrokerListener;
