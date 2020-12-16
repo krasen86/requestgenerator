@@ -10,11 +10,12 @@ export default class LoadTestRunner {
         let availability = message;
         let bookingDateAndTime = [];
         let numberOfRequestsToSend = number;
+
         for (let i = 0; i < availability.length; i++) {
-            let date = Object.keys(availability[i])[0];
-            for (let j = 0; j < availability[i][date].length; j++) {
-                let timeSlot = Object.keys(availability[i][date][j])[0];
-                bookingDateAndTime.push({"date": date, "timeSlot": timeSlot});
+            let date = availability[i].date;
+            for (let j = 0; j < availability[i].timeslots.length; j++) {
+                let timeSlotTime = availability[i].timeslots[j].time;
+                bookingDateAndTime.push({"date": date, "timeSlot": timeSlotTime});
             }
         }
         let subscriber = new Subscriber();
