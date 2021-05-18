@@ -1,5 +1,5 @@
 # Dentistimo RequestGenerator
-The requestGenerator is part of the Dentistimo testing fault tolerance framework, for the project documentations see. It is designed to send a number of booking requests to the [booking component](https://github.com/krasen86/booking) in order to stress-test the system. The number of requests is defined by the end-user through the website UI. Every request-load over 100 requests will be repeated after 10 seconds in order to visualize the fault tolerance.
+The requestGenerator is part of the Dentistimo testing fault tolerance framework, the project documentations can be found [here](https://github.com/krasen86/documentation). It is designed to send a number of booking requests to the [booking component](https://github.com/krasen86/booking) in order to stress-test the system. The number of requests is defined by the end-user through the website UI. Every request-load over 100 requests will be repeated after 10 seconds in order to visualize the fault tolerance.
 
 ## Project setup
 
